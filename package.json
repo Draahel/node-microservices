@@ -1,0 +1,17 @@
+{
+  "name": "microservices",
+  "version": "1.0.0",
+  "description": "Aprendiendo autentication, Microservicios y Redis con Node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Node",
+    "Microservicios",
+    "Redis",
+    "Autenticacion"
+  ],
+  "author": "Daniel Mercado",
+  "license": "MIT"
+}
