@@ -1,12 +1,14 @@
 import express from "express";
-import * as response from '../../../network/response.js';
-import * as controller from "./controller.js";
+import controller from "./index.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    const list = controller.list();
-    response.success(res, list)
-});
+router.get("/", controller.list);
+
+router.get("/:id", controller.get);
+
+router.post("/", controller.upsert);
+
+router.delete("/:id", controller.remove)
 
 export default router;
