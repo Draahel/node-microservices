@@ -32,8 +32,11 @@ function get (req, res) {
 };
 
 function insert (req, res) {
-    const data = req.body;
-    return controller.insert(data).then(
+    const { id, name, username, password } = req.body;
+    if (!id || !name || !username || !password) {
+        response.error(res, 'Invalida data', 400)
+    }
+    return controller.insert(req.body).then(
         (user) => response.success(res, user)
     ).catch(
         (err) => response.error(res, err.message)
@@ -42,6 +45,7 @@ function insert (req, res) {
 
 function update (req, res) {
     const data = req.body;
+    if (!data.id)  response.error(res, 'Id is required', 400)
     return controller.update(data).then(
         (user) => response.success(res, user)
     ).catch(

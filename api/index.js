@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Router
-app.use('/user', user)    
+app.use('/user', user);
 
 app.listen(
     config.api.port, 

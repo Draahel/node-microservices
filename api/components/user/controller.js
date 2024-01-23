@@ -1,5 +1,5 @@
 const TABLE = 'user';
-import * as response from '../../../network/response.js';
+import authController from '../auth/index.js';
 
 export default (store) => {
 
@@ -15,8 +15,18 @@ export default (store) => {
         return store.get(TABLE, id);
     };
 
-    const insert = (data) => {
-        return store.insert(TABLE, data);
+    const insert = async (data) => {
+        const authData = {
+            id: data.id,
+            username: data.username,
+            password: data.password
+        };
+        await authController.insert(authData);
+        const user = {
+            id: data.id,
+            name: data.name,
+        };
+        return store.insert(TABLE, user);
     };
 
     const update = (data) => {

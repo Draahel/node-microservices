@@ -1,6 +1,9 @@
 const db = {
     user: [
         {id: '1', name: 'Daniel'},
+    ],
+    auth: [
+        {id: '1', username: 'daniel', password: '12345'}
     ]
 };
 
