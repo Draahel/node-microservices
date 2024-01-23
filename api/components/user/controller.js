@@ -7,48 +7,24 @@ export default (store) => {
         throw new Error('[UserController] store is required');
     }
 
-    const list = (req, res) => {
-        return store.list(TABLE).then(
-            (list) => response.success(res, list)
-        ).catch(
-            (err) => response.error(res, err.message)
-        );
+    const list = () => {
+        return store.list(TABLE)
     };
     
-    const get = (req, res) => {
-        const id = req.params.id;
-        return store.get(TABLE, id).then(
-            (user) => response.success(res, user)
-        ).catch(
-            (err) => response.error(res, err.message)
-        );
+    const get = (id) => {
+        return store.get(TABLE, id);
     };
 
-    const insert = (req, res) => {
-        const data = req.body;
-        return store.upsert(TABLE, data).then(
-            (user) => response.success(res, user)
-        ).catch(
-            (err) => response.error(res, err)
-        );
+    const insert = (data) => {
+        return store.insert(TABLE, data);
     };
 
-    const update = (req, res) => {
-        const data = req.body;
-        return store.update(TABLE, data).then(
-            (user) => response.success(res, user)
-        ).catch(
-            (err) => response.error(res, err)
-        );
+    const update = (data) => {
+        return store.update(TABLE, data);
     };
 
-    const remove = (req, res) => {
-        const id = req.params.id;
-        return store.remove(TABLE, id).then(
-            (user) => response.success(res, user)
-        ).catch(
-            (err) => response.error(res, err)
-        );
+    const remove = (id) => {
+        return store.remove(TABLE, id);
     };
 
     return {
