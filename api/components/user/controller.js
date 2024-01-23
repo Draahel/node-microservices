@@ -24,9 +24,18 @@ export default (store) => {
         );
     };
 
-    const upsert = (req, res) => {
+    const insert = (req, res) => {
         const data = req.body;
         return store.upsert(TABLE, data).then(
+            (user) => response.success(res, user)
+        ).catch(
+            (err) => response.error(res, err)
+        );
+    };
+
+    const update = (req, res) => {
+        const data = req.body;
+        return store.update(TABLE, data).then(
             (user) => response.success(res, user)
         ).catch(
             (err) => response.error(res, err)
@@ -45,7 +54,8 @@ export default (store) => {
     return {
         list,
         get,
-        upsert,
+        insert,
+        update,
         remove
     }
 }
