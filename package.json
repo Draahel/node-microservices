@@ -4,10 +4,9 @@
   "description": "Aprendiendo autentication, Microservicios y Redis con Node",
   "main": "index.js",
   "type": "module",
-
   "scripts": {
-    "start":"node --env-file=.env ./api/index.js",
-    "start:dev":"nodemon --env-file=.env ./api/index.js",
+    "start": "node --env-file=.env ./api/index.js",
+    "start:dev": "nodemon --env-file=.env ./api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -19,7 +18,8 @@
   "author": "Daniel Mercado",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"

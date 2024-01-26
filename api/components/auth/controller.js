@@ -1,4 +1,7 @@
+import auth from "../../../adapter/auth.js";
+
 const TABLE = 'auth';
+
 
 export default (store) => {
     if (!store){
@@ -10,7 +13,7 @@ export default (store) => {
         if (user.password !== password){
             return null;
         }
-        return user;
+        return auth.sign(user);
     }
 
     const insert = (data) => {
