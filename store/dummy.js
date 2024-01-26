@@ -8,7 +8,7 @@ const db = {
 };
 
 export const list = async (table) => {
-    return db[table];
+    return db[table] || [];
 };
 
 export const get = async (table, id) => {
@@ -27,4 +27,11 @@ export const update = async (table, data) => {
 
 export const remove = async (table, id) => {
     db[table] = db[table].filter((item) => item.id !== id);
+};
+
+export const query = async (tabla, q) => {
+    const col = await list(tabla);
+    const keys = Object.keys(q);
+    const key = keys[0];
+    return col.find( item => item[key] == q[key] ) || null;
 };

@@ -5,6 +5,14 @@ export default (store) => {
         throw new Error('[UserController] store is required');
     }
 
+    const login = async (username, password) => {
+        const user = await store.query(TABLE, { username }); 
+        if (user.password !== password){
+            return null;
+        }
+        return user;
+    }
+
     const insert = (data) => {
         return store.insert(TABLE, data)
     };
@@ -20,6 +28,7 @@ export default (store) => {
 
     return{
         insert,
-        update
+        update,
+        login 
     }
 };
