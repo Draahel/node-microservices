@@ -1,4 +1,5 @@
 const TABLE = 'user';
+import bcrypt from '../../../adapter/bcrypt.js';
 import authController from '../auth/index.js';
 
 export default (store) => {
@@ -16,10 +17,11 @@ export default (store) => {
     };
 
     const insert = async (data) => {
+        const passwordHash = await bcrypt.hash(data.password)
         const authData = {
             id: data.id,
             username: data.username,
-            password: data.password
+            password: passwordHash
         };
         await authController.insert(authData);
         const user = {

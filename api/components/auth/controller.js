@@ -1,5 +1,5 @@
 import auth from "../../../adapter/auth.js";
-
+import bcrypt from "../../../adapter/bcrypt.js";
 const TABLE = 'auth';
 
 
@@ -9,10 +9,11 @@ export default (store) => {
     }
 
     const login = async (username, password) => {
-        const user = await store.query(TABLE, { username }); 
-        if (user.password !== password){
-            return null;
-        }
+        const user = await store.query(TABLE, { username });
+        if (!user) return null;
+        const verified = await bcrypt.compare(password, user.password)
+        if (!verified) return null;
+        delete user.password;
         return auth.sign(user);
     }
 
