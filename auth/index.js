@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import error from "../utils/error.js";
 import config from "../config.js";
 
 const sign = (data) => {
@@ -12,14 +13,13 @@ const verify = (token) => {
 const check = {
     own: (req, owner) => {
        const decoded = decodeHeader(req);
-       console.log(decoded);
-       if (decoded.id !== owner) throw new Error('Unauthorized');
+       if (decoded.id !== owner) throw error('Unauthorized', 401);
     }
 };
 
 const getToken = (authorization) => {
-    if (!authorization) throw new Error('Unauthorized');
-    if (authorization.indexOf('Bearer ') === -1) throw new Error('Unauthorized');
+    if (!authorization) throw error('Unauthorized', 401);
+    if (authorization.indexOf('Bearer ') === -1) throw error('Unauthorized', 401);
     const token = authorization.replace('Bearer ', '');
     return token
 };

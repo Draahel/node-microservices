@@ -32,7 +32,6 @@ const query = async (table, q) => {
 
 const upsert = async (table, data) => {
     db[table].push(data);
-    console.log(table,': ',db[table]);
     return data;
 };
 

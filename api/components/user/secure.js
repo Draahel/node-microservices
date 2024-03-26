@@ -2,7 +2,6 @@ import auth from "../../../auth/index.js";
 
 const checkAuth = (action) => {
     return (req, res, next) => {
-        console.log('Action: ' + action);
         switch (action) {
             case 'update':
                 const owner = req.body.id;

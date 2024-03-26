@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import store from '../../../store/dummy.js';
 import auth from '../../../auth/index.js';
+import error from '../../../utils/error.js';
 
 const TABLE = 'auth';
 
@@ -10,9 +11,8 @@ export default (injectedStore) => {
     const login = async (username, password) => {
         const data = await injectedStore.query(TABLE, { username })
         return bcrypt.compare(password, data.password).then( result => {
-            console.log('Result: ' + result);
             if (!data || !result) {
-                throw new Error('Invalid information');
+                throw error('Invalid information', 401);
             }
             delete data.password;
             return auth.sign(data);
