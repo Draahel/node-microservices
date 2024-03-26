@@ -1,5 +1,18 @@
 const db = {
-    users: [{id: '257b30bb-9395-4eb3-b66c-85e562db5426', name: 'John'}],
+    users: [
+        {
+            id: '257b30bb-9395-4eb3-b66c-85e562db5426', 
+            name: 'John',
+            username: 'JohnSi',
+        },
+    ],
+    auth: [
+        {
+            id: '257b30bb-9395-4eb3-b66c-85e562db5426',
+            username: 'JohnSi',
+            password: '$2b$05$U0d1LIaEuS3gk8NXId40juavj3Tx.6M3RJ42hEno6XF2/LyJysi1q',
+        }
+    ],
 };
 
 const list = async (table) => {
@@ -11,10 +24,15 @@ const get = async (table, id) => {
     return col.filter( item => item.id ===id)[0] || null;
 };
 
+const query = async (table, q) => {
+    const keys = Object.keys(q);
+    const key = keys[0];
+    return db[table].filter( item => item[key] === q[key])[0] || null;
+};
+
 const upsert = async (table, data) => {
-    // const user = await get(table, data.id);
-    // if (user) throw new Error('User already exists')
     db[table].push(data);
+    console.log(table,': ',db[table]);
     return data;
 };
 
@@ -29,6 +47,7 @@ const remove = async (table, id) => {
 export default {
     list,
     get,
+    query,
     upsert,
     remove,
 };

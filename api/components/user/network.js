@@ -1,4 +1,5 @@
 import express from 'express';
+import secure from './secure.js'
 import * as response from '../../../network/response.js';
 import controller from './index.js';
 
@@ -23,6 +24,16 @@ router.post('/', (req, res) => {
         .then(data => response.success(res, data, 201))
         .catch(err => response.error(res, err.message));
 });
+
+router.put('/',
+    secure('update'),
+    (req, res) => {
+        const body = req.body;
+        controller.upsert(body)
+            .then(data => response.success(res, data, 201))
+            .catch(err => response.error(res, err.message));
+    }
+);
 
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
