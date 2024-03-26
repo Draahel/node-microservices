@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import store from '../../../store/dummy.js';
 import auth from '../auth/index.js';
 
-const TABLE = 'users';
+const TABLE = 'user';
 
 
 export default (injectedStore) => {

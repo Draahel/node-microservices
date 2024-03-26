@@ -1,4 +1,4 @@
-import store from '../../../store/dummy.js';
+import store from '../../../store/mysql.js';
 import controller from './controller.js';
 
 export default controller(store);
