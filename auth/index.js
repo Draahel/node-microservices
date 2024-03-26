@@ -3,7 +3,7 @@ import error from "../utils/error.js";
 import config from "../config.js";
 
 const sign = (data) => {
-    return jwt.sign(data, config.jwt.secret);
+    return jwt.sign({...data}, config.jwt.secret);
 }
 
 const verify = (token) => {

@@ -9,7 +9,7 @@ export default (injectedStore) => {
     if (!injectedStore) injectedStore = store;
 
     const login = async (username, password) => {
-        const data = await injectedStore.query(TABLE, { username })
+        const data = await injectedStore.query(TABLE, { username });
         return bcrypt.compare(password, data.password).then( result => {
             if (!data || !result) {
                 throw error('Invalid information', 401);

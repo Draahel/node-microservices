@@ -56,7 +56,44 @@ const get = (table, id) => {
     });
 };
 
+const insert = (table, data) => {
+    const query = `INSERT INTO ${table} SET ?`
+    return new Promise((resolve, reject) => {
+        connection.query(query, data, (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
+const update = (table, data) => {
+    const query = `UPDATE ${table} SET ? WHERE id=?`
+    return new Promise((resolve, reject) => {
+        connection.query(query, [data, data.id], (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
+const upsert = (table, data) => {
+    if (data && data.id) return update(table, data);
+    else return insert(table, data);
+}
+
+const query = (table, q) => {
+    const query = `SELECT * FROM ${table} WHERE ?`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, q, (err, results) => {
+            if (err) return reject(err);
+            resolve(results[0] || null);
+        });
+    });
+}
+
 export default {
     get,
-    list
+    list,
+    upsert,
+    query,
 };
