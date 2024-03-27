@@ -25,6 +25,15 @@ router.post('/', (req, res, next) => {
         .catch(err => next(err));
 });
 
+router.post('/follow/:id', 
+    secure('follow'), 
+    (req, res, next) => {
+        controller.follow(req.user.id, req.params.id)
+            .then(data => response.success(res, data, 201))
+            .catch(err => next(err));
+    }
+);
+
 router.put('/',
     secure('update'),
     (req, res, next) => {
