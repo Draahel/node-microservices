@@ -81,8 +81,16 @@ const upsert = (table, data) => {
     else return insert(table, data);
 }
 
-const query = (table, q) => {
-    const query = `SELECT * FROM ${table} WHERE ?`;
+const query = (table, q, join) => {
+    let joinQuery = '';
+    if (join) {
+        const key = Object.keys(join)[0];
+        const val = join[key];
+        joinQuery = `JOIN ${key} ON ${table}.${val} = ${key}.id`;
+    }
+
+
+    const query = `SELECT * FROM ${table} ${joinQuery} WHERE ${table}.?`;
     return new Promise((resolve, reject) => {
         connection.query(query, q, (err, results) => {
             if (err) return reject(err);

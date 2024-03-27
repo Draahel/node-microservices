@@ -42,11 +42,19 @@ export default (injectedStore) => {
         });
     };
 
+    const following = async (id) => {
+        const join = {};
+        join[TABLE] = 'user_to';
+        const query = { user_from: id }
+        return injectedStore.query(`${TABLE}_follow`, query, join);
+    }
+
     return {
         list,
         get,
         upsert,
         remove,
         follow,
+        following,
     };
 };

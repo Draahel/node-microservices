@@ -6,6 +6,7 @@ import controller from './index.js';
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
+    console.log('List')
     controller.list()
         .then(list => response.success(res, list))
         .catch(err => next(err));
@@ -25,15 +26,6 @@ router.post('/', (req, res, next) => {
         .catch(err => next(err));
 });
 
-router.post('/follow/:id', 
-    secure('follow'), 
-    (req, res, next) => {
-        controller.follow(req.user.id, req.params.id)
-            .then(data => response.success(res, data, 201))
-            .catch(err => next(err));
-    }
-);
-
 router.put('/',
     secure('update'),
     (req, res, next) => {
@@ -50,5 +42,22 @@ router.delete('/:id', (req, res, next) => {
         .then(data => response.success(res, data))
         .catch(err => next(err));
 });
+
+router.post('/follow/:id', 
+    secure('follow'), 
+    (req, res, next) => {
+        controller.follow(req.user.id, req.params.id)
+            .then(data => response.success(res, data, 201))
+            .catch(err => next(err));
+    }
+);
+
+router.get('/:id/following',
+    (req, res, next) => {
+        controller.following(req.params.id)
+            .then(data => response.success(res, data))
+            .catch(err => next(err));
+    }
+)
 
 export default router;

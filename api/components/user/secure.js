@@ -9,6 +9,7 @@ const checkAuth = (action) => {
                 next();
                 break;
             case 'follow':
+                console.log('following');
                 auth.check.logged(req);
                 next();
                 break;
