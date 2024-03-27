@@ -6,7 +6,6 @@ import controller from './index.js';
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-    console.log('List')
     controller.list()
         .then(list => response.success(res, list))
         .catch(err => next(err));
