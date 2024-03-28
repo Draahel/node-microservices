@@ -5,6 +5,7 @@ import store from '../store/mysql.js';
 const router = express.Router();
 
 router.get('/:table', list);
+router.get('/:table/query', query);
 router.get('/:table/:id', get);
 router.post('/:table', insert);
 router.put('/', upsert);
@@ -30,6 +31,11 @@ async function upsert(req, res, next){
     const data = await store.upsert( req.params.table, req.body );
     response.success(res, data, 200);
 }
+
+async function query(req, res, next){
+    const data = await store.query( req.params.table, req.body.query, req.body.join );
+    response.success(res, data)
+};
 
 async function remove(req, res, next){
     const data = await store.remove( req.params.table, req.params.id );

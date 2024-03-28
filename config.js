@@ -13,7 +13,8 @@ const config = {
         port: process.env.MYSQL_PORT,
     },
     mysqlApi: {
-        port: process.env.MYSQL_API_PORT || 3001
+        host: process.env.MYSQL_API_HOST,
+        port: process.env.MYSQL_API_PORT || 3001,
     },
 }
 
