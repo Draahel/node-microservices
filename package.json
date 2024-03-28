@@ -7,6 +7,8 @@
   "scripts": {
     "start": "node --env-file=.env api/index.js",
     "start:dev": "nodemon --env-file=.env api/index.js",
+    "start-post": "node --env-file=.env post/index.js",
+    "start-post:dev": "nodemon --env-file=.env post/index.js",
     "start-mysql": "node --env-file=.env mysql/index.js",
     "start-mysql:dev": "nodemon --env-file=.env mysql/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

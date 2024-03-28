@@ -2,6 +2,9 @@ const config = {
     api: {
         port: process.env.PORT || 3000,
     },
+    postApi: {
+        port: process.env.POST_API_PORT || 3002,
+    },
     jwt: {
         secret: process.env.JWT_SECRET,
     },
