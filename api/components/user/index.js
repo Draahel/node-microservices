@@ -1,4 +1,4 @@
-import * as store from '../../../store/dummy.js';
+import store from '../../../store/mysql-remote.js';
 import controller from './controller.js';
 
 export default controller(store);

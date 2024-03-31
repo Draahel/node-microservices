@@ -1,37 +1,52 @@
 const db = {
-    user: [
-        {id: '1', name: 'Daniel'},
+    users: [
+        {
+            id: '257b30bb-9395-4eb3-b66c-85e562db5426', 
+            name: 'John',
+            username: 'JohnSi',
+        },
     ],
     auth: [
-        {id: '1', username: 'daniel', password: '12345'}
-    ]
+        {
+            id: '257b30bb-9395-4eb3-b66c-85e562db5426',
+            username: 'JohnSi',
+            password: '$2b$05$U0d1LIaEuS3gk8NXId40juavj3Tx.6M3RJ42hEno6XF2/LyJysi1q',
+        }
+    ],
 };
 
-export const list = async (table) => {
-    return db[table] || [];
+const list = async (table) => {
+    return db[table];
 };
 
-export const get = async (table, id) => {
-    return db[table].find((item)=>item.id === id) || null;
+const get = async (table, id) => {
+    const col = await list(table);
+    return col.filter( item => item.id ===id)[0] || null;
 };
 
-export const insert = async (table, data) => {
+const query = async (table, q) => {
+    const keys = Object.keys(q);
+    const key = keys[0];
+    return db[table].filter( item => item[key] === q[key])[0] || null;
+};
+
+const upsert = async (table, data) => {
     db[table].push(data);
     return data;
 };
 
-export const update = async (table, data) => {
-    db[table] = db[table].map((item) => item.id === data.id ? {...item, ...data} : item);
-    return data;
+const remove = async (table, id) => {
+    db[table] = db[table].filter(
+        item => item.id !== id
+    );
+    return true;
 };
 
-export const remove = async (table, id) => {
-    db[table] = db[table].filter((item) => item.id !== id);
-};
 
-export const query = async (tabla, q) => {
-    const col = await list(tabla);
-    const keys = Object.keys(q);
-    const key = keys[0];
-    return col.find( item => item[key] == q[key] ) || null;
+export default {
+    list,
+    get,
+    query,
+    upsert,
+    remove,
 };

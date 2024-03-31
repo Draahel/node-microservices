@@ -1,49 +1,60 @@
+import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
+import store from '../../../store/dummy.js';
+import auth from '../auth/index.js';
+
 const TABLE = 'user';
-import bcrypt from '../../../adapter/bcrypt.js';
-import authController from '../auth/index.js';
 
-export default (store) => {
 
-    if (!store){
-        throw new Error('[UserController] store is required');
-    }
+export default (injectedStore) => {
+    if (!injectedStore) injectedStore = store;
 
-    const list = () => {
-        return store.list(TABLE)
-    };
+    const list = () => injectedStore.list(TABLE);
     
-    const get = (id) => {
-        return store.get(TABLE, id);
-    };
+    const get = (id) => injectedStore.get(TABLE, id);
 
-    const insert = async (data) => {
-        const passwordHash = await bcrypt.hash(data.password)
-        const authData = {
-            id: data.id,
-            username: data.username,
-            password: passwordHash
-        };
-        await authController.insert(authData);
-        const user = {
-            id: data.id,
+    const upsert = async (data) => {
+        let user = { 
             name: data.name,
+            username: data.username
         };
-        return store.insert(TABLE, user);
+
+        if (data.id) user.id = data.id;
+        else user.id = uuidv4();
+
+        if (data.password || data.email) {
+            await auth.upsert({
+                id: user.id,
+                username: user.username,
+                password: await bcrypt.hash(data.password, 5),
+            });
+        }
+
+        return injectedStore.upsert(TABLE, user)
     };
 
-    const update = (data) => {
-        return store.update(TABLE, data);
+    const remove = (id) => injectedStore.remove(TABLE, id);
+
+    const follow = (from, to) => {
+        return injectedStore.upsert(`${TABLE}_follow`, {
+            user_from: from,
+            user_to: to,
+        });
     };
 
-    const remove = (id) => {
-        return store.remove(TABLE, id);
-    };
+    const following = async (id) => {
+        const join = {};
+        join[TABLE] = 'user_to';
+        const query = { user_from: id }
+        return injectedStore.query(`${TABLE}_follow`, query, join);
+    }
 
     return {
         list,
         get,
-        insert,
-        update,
-        remove
-    }
-}
+        upsert,
+        remove,
+        follow,
+        following,
+    };
+};

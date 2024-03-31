@@ -1,17 +1,22 @@
-import auth from "../../../adapter/auth.js";
+import auth from "../../../auth/index.js";
 
-export default checkAut = (action) => {
-    const middleware = (req, res, next) => {
+const checkAuth = (action) => {
+    return (req, res, next) => {
         switch (action) {
             case 'update':
                 const owner = req.body.id;
-                auth.check.own(req, owner)
+                auth.check.own(req, owner);
+                next();
                 break;
-        
+            case 'follow':
+                console.log('following');
+                auth.check.logged(req);
+                next();
+                break;
             default:
                 next();
         }
-    };
-
-    return middleware
+    }
 }
+
+export default checkAuth;

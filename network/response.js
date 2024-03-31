@@ -1,15 +1,15 @@
-export const success = (res, message = '', status = 200) => {
-    res.status(status).json({
-        error: null,
+export const success = ( res, message, status = 200 ) => {
+    res.status(status).send({
+        error: false,
         status,
-        body: message
-    })
-}
+        body: message || ''
+    });
+};
 
-export const error = (res, message = 'Internal Server Error', status = 500) => {
-    res.status(status).json({
+export const error = ( res, message, status = 500 ) => {
+    res.status(status).send({
         error: true,
         status,
-        body: message
-    })
-}
+        body: message || 'Internal Server Error'
+    });
+};

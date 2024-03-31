@@ -1,38 +1,33 @@
-import auth from "../../../adapter/auth.js";
-import bcrypt from "../../../adapter/bcrypt.js";
+import bcrypt from 'bcrypt';
+import store from '../../../store/dummy.js';
+import auth from '../../../auth/index.js';
+import error from '../../../utils/error.js';
+
 const TABLE = 'auth';
 
-
-export default (store) => {
-    if (!store){
-        throw new Error('[UserController] store is required');
-    }
+export default (injectedStore) => {
+    if (!injectedStore) injectedStore = store;
 
     const login = async (username, password) => {
-        const user = await store.query(TABLE, { username });
-        if (!user) return null;
-        const verified = await bcrypt.compare(password, user.password)
-        if (!verified) return null;
-        delete user.password;
-        return auth.sign(user);
-    }
-
-    const insert = (data) => {
-        return store.insert(TABLE, data)
+        const data = await injectedStore.query(TABLE, { username });
+        return bcrypt.compare(password, data.password).then( result => {
+            if (!data || !result) {
+                throw error('Invalid information', 401);
+            }
+            delete data.password;
+            return auth.sign(data);
+        }) 
     };
 
-    const update = (data) => {
-        const id = data.id;
-        const dataAuth = { id };
-        const { username, password } = data;
-        if (username) dataAuth.username = username;
-        if (password) dataAuth.password = password;
-        return store.upsert(TABLE, dataAuth);
+    const upsert = (data) => {
+        let authData = { id: data.id };
+        if (data.username) authData.username = data.username;
+        if (data.password) authData.password = data.password;
+        return injectedStore.upsert(TABLE, authData)
     };
 
-    return{
-        insert,
-        update,
-        login 
-    }
+    return {
+        login,
+        upsert,
+    };
 };

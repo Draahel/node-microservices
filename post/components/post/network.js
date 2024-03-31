@@ -1,5 +1,4 @@
 import express from 'express';
-import secure from './secure.js'
 import * as response from '../../../network/response.js';
 import controller from './index.js';
 
@@ -26,7 +25,6 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/',
-    secure('update'),
     (req, res, next) => {
         const body = req.body;
         controller.upsert(body)
@@ -42,21 +40,5 @@ router.delete('/:id', (req, res, next) => {
         .catch(err => next(err));
 });
 
-router.post('/follow/:id', 
-    secure('follow'), 
-    (req, res, next) => {
-        controller.follow(req.user.id, req.params.id)
-            .then(data => response.success(res, data, 201))
-            .catch(err => next(err));
-    }
-);
-
-router.get('/:id/following',
-    (req, res, next) => {
-        controller.following(req.params.id)
-            .then(data => response.success(res, data))
-            .catch(err => next(err));
-    }
-)
 
 export default router;
